@@ -34,7 +34,7 @@ function restricted() {
     }
   }
   
-  router.get("/", restricted(), async (req, res, next) => {
+  router.get("/users", restricted(), async (req, res, next) => {
     try {
       const users = await userModel.find()
       

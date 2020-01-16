@@ -5,8 +5,8 @@ const users = require("./users/user-router")
 const port = 5000
 
 server.use(express.json())
-server.use("/auth", auth)
-server.use("/users", users)
+server.use("/api", auth)
+server.use("/api", users)
 
 server.use((err, req, res, next) => {
     console.log(err)
