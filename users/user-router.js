@@ -5,44 +5,43 @@ const userModel = require("./user-model")
 const router = express.Router()
 
 function restricted() {
+    // put message in a variable so we can reuse it
     const authError = {
-        message: "wrong"
+      message: "Invalid credentials",
     }
-
+  
     return async (req, res, next) => {
-        try {
-            const { username, password } = req.headers
-
-            if (!username || !password) {
-                return res.status(401).json(authError)
-            }
-
-            const user = await userModel.findBy({ username }).first()
-
-            if (!user) {
-                return res.status(401).json(authError)
-            }
-
-            const valid = await brcytpt.compare(password, user.password)
-
-            if (!valid) {
-                return res.status(401).json(authError)
-            }
-
-            next()
-        } catch(err) {
-            next(err)
+      try {
+        const { username, password } = req.headers
+        if (!username || !password) {
+          return res.status(401).json(authError)
         }
-    }
-}
-router.get("/", restricted(), async (req, res, next) => {
-    try {
-        const users = await userModel.find()
+  
+        const user = await userModel.findBy({ username }).first()
+        if (!user) {
+          return res.status(401).json(authError)
+        }
+  
+        const passwordValid = await bcrypt.compare(password, user.password)
+        if (!passwordValid) {
+          return res.status(401).json(authError)
+        }
 
-        res.json(users)
-    } catch(err) {
+        next()
+      } catch (err) {
         next(err)
+      }
     }
-})
+  }
+  
+  router.get("/", restricted(), async (req, res, next) => {
+    try {
+      const users = await userModel.find()
+      
+      res.json(users)
+    } catch (err) {
+      next(err)
+    }
+  })
 
 module.exports = router
