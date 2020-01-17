@@ -21,6 +21,7 @@ router.post("/login", async (req, res, next) => {
         const valid = await bcrypt.compare(password, user.password)
 
         if (user && valid) {
+            req.session.user = user
             res.status(200).json({
                 message: `welcome ${user.username}`
             })
