@@ -1,4 +1,5 @@
 const express = require("express")
+const cors = require("cors")
 const server = express()
 const auth = require("./auth/auth-route")
 const users = require("./users/user-router")
@@ -23,6 +24,7 @@ const sessionConfig = {
     })
 }
 
+server.use(cors())
 server.use(express.json())
 server.use(session(sessionConfig))
 server.use("/api", auth)
