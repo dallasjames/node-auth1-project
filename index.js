@@ -13,11 +13,6 @@ const sessionConfig = {
     secret: "secrets is hard",
     resave: false,
     savedUninitialized: false,
-    cookie: {
-        maxAge: 1000 * 60 * 60 * 24 * 7,
-        secure: false,
-        httpOnly: true
-    },
     store: new KnexSessionStore({
         knex: dbConfig,
         createtable: true
